@@ -1,0 +1,8 @@
+{ "fruit_meta_info": {
+  "branch" : "@GIT_BRANCH@",
+  "commit_hash" : "@GIT_COMMIT_HASH@",
+  "date" :       "@GIT_COMMIT_DATE@" ,
+  "tag"  :       "@GIT_TAG@"         ,
+  "info" :      "@GIT_BRANCH@ - @GIT_TAG@ - @GIT_COMMIT_HASH@ - @GIT_COMMIT_DATE@"
+  }
+}
