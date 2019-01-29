@@ -23,7 +23,6 @@
 
 
 module fruit_util
-  use, intrinsic :: iso_fortran_env, only: real32, real64, int32, int64
   private
   
   public :: equals, to_s, strip
@@ -238,7 +237,6 @@ end module fruit_util
 
 
 module fruit
-  use, intrinsic :: iso_fortran_env, only: real32, real64, int32, int64
   use fruit_util
   implicit none
   private
@@ -249,7 +247,8 @@ module fruit
   integer, parameter :: XML_OPEN = 20
   integer, parameter :: XML_WORK_DEFAULT = 21
   integer :: xml_work = XML_WORK_DEFAULT
-  character (len = *), parameter :: xml_filename     = "result.xml"
+  character (len=:), allocatable :: xml_filename
+  character (len=*), parameter :: XML_FN_DEF = "result.xml"
   character (len = *), parameter :: XML_FN_WORK_DEF = "result_tmp.xml"
   character (len = 50) :: xml_filename_work = XML_FN_WORK_DEF
 
@@ -572,6 +571,11 @@ module fruit
     module procedure get_xml_filename_work_
   end interface
 
+  public ::          set_xml_filename
+  interface          set_xml_filename
+    module procedure set_xml_filename_
+  end interface
+
   public ::          set_xml_filename_work
   interface          set_xml_filename_work
     module procedure set_xml_filename_work_
@@ -694,6 +698,7 @@ contains
 
 
     if (rank_zero_or_single) then
+      xml_filename = XML_FN_DEF
       open (XML_OPEN, file = xml_filename, action ="write", status = "replace")
         write(XML_OPEN, '("<?xml version=""1.0"" encoding=""UTF-8""?>")')
         write(XML_OPEN, '("<testsuites>")')
@@ -810,7 +815,7 @@ contains
     write(XML_OPEN, '("failures=""", a, """ ")', advance = "no") &
     &  trim(fail_count)
     write(XML_OPEN, '("name=""", a, """ ")', advance = "no") &
-    &  "name of test suite"
+        & trim(case_name)
     write(XML_OPEN, '("id=""1"">")')
 
     open (xml_work, FILE = xml_filename_work)
@@ -1076,6 +1081,10 @@ contains
     xml_filename_work = trim(string)
   end subroutine set_xml_filename_work_
 
+  subroutine set_xml_filename_(string)
+    character(len = *), intent(in) :: string
+    xml_filename = trim(string)
+  end subroutine set_xml_filename_
 
   function get_last_message()
     character(len=MSG_LENGTH) :: get_last_message
@@ -1385,81 +1394,6 @@ contains
       call failed_assert_action(to_s(.true.), to_s(var1), message, if_is = .false.)
     endif
   end subroutine assert_false_
-
-
-  !====== ADDED real64 subroutines =====
-  !=====================================
-
-!  !------ 0d_real64 ------
-!  subroutine assert_eq_real64_(var1, var2, message)
-!
-!    real (real64), intent (in) :: var1, var2
-!    
-!    character(len = *), intent (in), optional :: message
-!
-!        if ((var1 < var2) .or. (var1 > var2)) then
-!          call failed_assert_action(&
-!          & to_s(var1), &
-!          & to_s(var2), message, if_is = .true.)
-!          return
-!        endif
-!
-!    call add_success
-!  end subroutine assert_eq_real64_
-!
-!  !------ 0d_real64 ------
-!  subroutine assert_eq_real64_in_range_(var1, var2, delta, message)
-!
-!    real (real64), intent (in) :: var1, var2
-!    real (real64), intent (in) :: delta
-!    character(len = *), intent (in), optional :: message
-!
-!        if (abs(var1 - var2) > delta) then
-!          call failed_assert_action(&
-!          & to_s(var1), &
-!          & to_s(var2), message, if_is = .true.)
-!          return
-!        endif
-!
-!    call add_success
-!  end subroutine assert_eq_real64_in_range_
-!
-!  !------ 1d_real64 ------
-!  subroutine assert_eq_1d_real64_(var1, var2, n, message)
-!    integer, intent (in) :: n
-!    integer              :: i
-!    real (real64), intent (in) :: var1(n), var2(n)
-!    
-!    character(len = *), intent (in), optional :: message
-!    do i = 1, n
-!        if ((var1(i) < var2(i)) .or. (var1(i) > var2(i))) then
-!          call failed_assert_action(&
-!          & to_s(var1(i)), &
-!          & to_s(var2(i)), '1d array has difference, ' // message, if_is = .true.)
-!          return
-!        endif
-!    enddo
-!    call add_success
-!  end subroutine assert_eq_1d_real64_
-!
-!  !------ 1d_real64 ------
-!  subroutine assert_eq_1d_real64_in_range_(var1, var2, n, delta, message)
-!    integer, intent (in) :: n
-!    integer              :: i
-!    real (real64), intent (in) :: var1(n), var2(n)
-!    real (real64), intent (in) :: delta
-!    character(len = *), intent (in), optional :: message
-!    do i = 1, n
-!        if (abs(var1(i) - var2(i)) > delta) then
-!          call failed_assert_action(&
-!          & to_s(var1(i)), &
-!          & to_s(var2(i)), '1d array has difference, ' // message, if_is = .true.)
-!          return
-!        endif
-!    enddo
-!    call add_success
-!  end subroutine assert_eq_1d_real64_in_range_
-
 
   !====== begin of generated code ======
   !------ 0d_logical ------
