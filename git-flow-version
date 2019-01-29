@@ -1,2 +1,2 @@
 character(len=:),allocatable :: GITFLOW_VERSION
-GITFLOW_VERSION='3.4.3'
+GITFLOW_VERSION='3.5.0'
