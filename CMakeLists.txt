@@ -124,34 +124,6 @@ add_library(
   ${SRC_FILES}
 )
 
-# Write name of the dependencies, library name, and name of one of the header
-# files that you should find, using as a separator the "%" sign
-include(Dependencies_${LIBRARY_NAME}${SHIPPABLE_SUFFIX})
-
-parseDependencies(DEPENDENCIES_LIST ${Dependencies_${LIBRARY_NAME}})
-
-set(I 0)
-foreach (dependency ${Dependencies_names_${LIBRARY_NAME}})
-
-  # If the library cannot be found, add the compilation instructions
-  string(TOUPPER ${dependency} tmp)
-
-  if (NOT ${tmp}_FOUND)
-    if (NOT TARGET EXT_${dependency})
-      include(external_${dependency})
-      MESSAGE(STATUS "Adding dependency-----------> " EXT_${dependency} " to library: " ${LIBRARY_NAME})
-      add_dependencies (${LIBRARY_NAME} EXT_${dependency})
-    endif (NOT TARGET EXT_${dependency})
-  endif (NOT ${tmp}_FOUND)
-
-  # Add nested dependencies
-  list(GET Dependencies_${LIBRARY_NAME} ${I} dependency_nested)
-  addNestedLibraries(${dependency_nested} "${target_link_libraries_list}")
-  addNestedIncludeDirectories(${dependency_nested} "${include_directories_list}")
-
-  MATH(EXPR I "${I}+1")
-endforeach(dependency)
-
 # Note that library dependencies are transitive by default,
 # see https://cmake.org/cmake/help/v3.0/command/target_link_libraries.html, and
 # so sub-dependencies are correctly propagated
