@@ -1585,7 +1585,7 @@ contains
     real, intent (in) :: delta
     character(len = *), intent (in), optional :: message
 
-        if (abs(var1 - var2) > delta) then
+        if (abs(var1-var2)/var1 > delta) then
           call failed_assert_action(&
           & to_s(var1), &
           & to_s(var2), message, if_is = .true.)
@@ -1621,7 +1621,7 @@ contains
     real, intent (in) :: delta
     character(len = *), intent (in), optional :: message
     do i = 1, n
-        if (abs(var1(i) - var2(i)) > delta) then
+        if (abs(var1(i)-var2(i))/var1(i) > delta) then
           call failed_assert_action(&
           & to_s(var1(i)), &
           & to_s(var2(i)), '1d array has difference, ' // message, if_is = .true.)
@@ -1660,7 +1660,7 @@ contains
     character(len = *), intent (in), optional :: message
     do j = 1, m
       do i = 1, n
-        if (abs(var1(i, j) - var2(i, j)) > delta) then
+        if (abs(var1(i,j)-var2(i,j))/var1(i,j) > delta) then
           call failed_assert_action(&
           & to_s(var1(i, j)), &
           & to_s(var2(i, j)), '2d array has difference, ' // message, if_is = .true.)
@@ -1695,7 +1695,7 @@ contains
     double precision, intent (in) :: delta
     character(len = *), intent (in), optional :: message
 
-        if (abs(var1 - var2) > delta) then
+        if (abs(var1-var2)/var1 > delta) then
           call failed_assert_action(&
           & to_s(var1), &
           & to_s(var2), message, if_is = .true.)
@@ -1731,7 +1731,7 @@ contains
     double precision, intent (in) :: delta
     character(len = *), intent (in), optional :: message
     do i = 1, n
-        if (abs(var1(i) - var2(i)) > delta) then
+        if (abs(var1(i)-var2(i))/var1(i) > delta) then
           call failed_assert_action(&
           & to_s(var1(i)), &
           & to_s(var2(i)), '1d array has difference, ' // message, if_is = .true.)
@@ -1770,7 +1770,7 @@ contains
     character(len = *), intent (in), optional :: message
     do j = 1, m
       do i = 1, n
-        if (abs(var1(i, j) - var2(i, j)) > delta) then
+        if (abs(var1(i,j)-var2(i,j))/var1(i,j) > delta) then
           call failed_assert_action(&
           & to_s(var1(i, j)), &
           & to_s(var2(i, j)), '2d array has difference, ' // message, if_is = .true.)
@@ -1808,7 +1808,7 @@ contains
     double precision, intent (in) :: delta
     character(len = *), intent (in), optional :: message
 
-        if (abs(var1 - var2) > delta) then
+        if (abs(var1-var2) > delta) then
           call failed_assert_action(&
           & to_s(var1), &
           & to_s(var2), message, if_is = .true.)
@@ -1847,7 +1847,7 @@ contains
     double precision, intent (in) :: delta
     character(len = *), intent (in), optional :: message
     do i = 1, n
-        if (abs(var1(i) - var2(i)) > delta) then
+        if (abs(var1(i)-var2(i)) > delta) then
           call failed_assert_action(&
           & to_s(var1(i)), &
           & to_s(var2(i)), '1d array has difference, ' // message, if_is = .true.)
@@ -1889,7 +1889,7 @@ contains
     character(len = *), intent (in), optional :: message
     do j = 1, m
       do i = 1, n
-        if (abs(var1(i, j) - var2(i, j)) > delta) then
+        if (abs(var1(i,j)-var2(i,j)) > delta) then
           call failed_assert_action(&
           & to_s(var1(i, j)), &
           & to_s(var2(i, j)), '2d array has difference, ' // message, if_is = .true.)
@@ -2152,7 +2152,7 @@ contains
 
     same_so_far = .true.
 
-        if (abs(var1 - var2) > delta) then
+        if (abs(var1-var2)/var1 > delta) then
           same_so_far = .false.
         endif
 
@@ -2200,7 +2200,7 @@ contains
 
     same_so_far = .true.
     do i = 1, n
-        if (abs(var1(i) - var2(i)) > delta) then
+        if (abs(var1(i)-var2(i))/var1(i) > delta) then
           same_so_far = .false.
         endif
     enddo
@@ -2251,7 +2251,7 @@ contains
     same_so_far = .true.
     do j = 1, m
       do i = 1, n
-        if (abs(var1(i, j) - var2(i, j)) > delta) then
+        if (abs(var1(i,j)-var2(i,j))/var1(i,j) > delta) then
           same_so_far = .false.
         endif
       enddo
@@ -2298,7 +2298,7 @@ contains
 
     same_so_far = .true.
 
-        if (abs(var1 - var2) > delta) then
+        if (abs(var1-var2)/var1 > delta) then
           same_so_far = .false.
         endif
 
@@ -2346,7 +2346,7 @@ contains
 
     same_so_far = .true.
     do i = 1, n
-        if (abs(var1(i) - var2(i)) > delta) then
+        if (abs(var1(i)-var2(i))/var1(i) > delta) then
           same_so_far = .false.
         endif
     enddo
@@ -2397,7 +2397,7 @@ contains
     same_so_far = .true.
     do j = 1, m
       do i = 1, n
-        if (abs(var1(i, j) - var2(i, j)) > delta) then
+        if (abs(var1(i,j)-var2(i,j))/var1(i,j) > delta) then
           same_so_far = .false.
         endif
       enddo
@@ -2447,7 +2447,7 @@ contains
 
     same_so_far = .true.
 
-        if (abs(var1 - var2) > delta) then
+        if (abs(var1-var2) > delta) then
           same_so_far = .false.
         endif
 
@@ -2498,7 +2498,7 @@ contains
 
     same_so_far = .true.
     do i = 1, n
-        if (abs(var1(i) - var2(i)) > delta) then
+        if (abs(var1(i)-var2(i)) > delta) then
           same_so_far = .false.
         endif
     enddo
@@ -2552,7 +2552,7 @@ contains
     same_so_far = .true.
     do j = 1, m
       do i = 1, n
-        if (abs(var1(i, j) - var2(i, j)) > delta) then
+        if (abs(var1(i,j)-var2(i,j)) > delta) then
           same_so_far = .false.
         endif
       enddo
